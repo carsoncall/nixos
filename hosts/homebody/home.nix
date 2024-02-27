@@ -55,8 +55,10 @@
     rustc
     gcc
     vscode-fhs
+
+    # I D WHEE
     zellij
-    
+    ranger
 
     # # utilities
     unzip
@@ -117,7 +119,7 @@
     SHELL = "${pkgs.zsh}/bin/zsh";
     # NIXOS_OZONE_WL = "1";
   };
-  
+
   programs = {
     home-manager.enable = true;
     zsh = {
@@ -125,11 +127,14 @@
       enableCompletion = false;
       shellAliases = {
         home-edit = "nano /home/carsoncall/nixos/hosts/homebody/home.nix";
-        conf-edit = "nano /home/carsoncall/nixos/hosts/homebody/configuration.nix";
-        update = "sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody";
+        conf-edit =
+          "nano /home/carsoncall/nixos/hosts/homebody/configuration.nix";
+        update =
+          "sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody";
         clean = "sudo nix-collect-garbage --delete-older-than 7d";
-        update-extensions = ''sh /home/carsoncall/code/nixpkgs/pkgs/applications/editors/vscode/extensions/update_installed_exts.sh
-                             >> ~/nixos/hosts/homebody/extensions.json'';
+        update-extensions = ''
+          sh /home/carsoncall/code/nixpkgs/pkgs/applications/editors/vscode/extensions/update_installed_exts.sh
+                                       >> ~/nixos/hosts/homebody/extensions.json'';
       };
       oh-my-zsh = {
         enable = true;
@@ -137,44 +142,36 @@
         theme = "terminalparty";
       };
     };
-    
+
     helix = {
       enable = true;
-        settings = {
-          theme = "autumn_night_transparent";
-          editor.cursor-shape = {
-            normal = "block";
-            insert = "bar";
-            select = "underline";
-          };
+      settings = {
+        theme = "autumn_night_transparent";
+        editor.cursor-shape = {
+          normal = "block";
+          insert = "bar";
+          select = "underline";
         };
-        languages.language = [{
-          name = "nix";
-          auto-format = true;
-          formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-        }];
-        themes = {
-          autumn_night_transparent = {
-            "inherits" = "autumn_night";
-            "ui.background" = { };
-          };
+      };
+      languages.language = [{
+        name = "nix";
+        auto-format = true;
+        formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+      }];
+      themes = {
+        autumn_night_transparent = {
+          "inherits" = "autumn_night";
+          "ui.background" = { };
         };
+      };
     };
 
-    #vscode = {
-      #enable = true;
-      # extensions = with pkgs.vscode-extensions; [
-        #bbenoist.nix
-        #jnoortheen.nix-ide
-        #github.copilot
-        #github.copilot-chat
-        #jdinhlife.gruvbox
-        #redhat.java
-        #vscjava.vscode-java-debug
-        #vscjava.vscode-java-dependency
-        #vscjava.vscode-maven
-      #];
-    #};
+    alacritty = { enable = true; };
+
+    firefox = { enable = true; };
+
+    fish = { enable = true; };
+
   };
 
   dconf.settings = {
@@ -188,8 +185,8 @@
         "steam.desktop"
         "signal-desktop.desktop"
         "protonvpn-app.desktop"
-	      "mumble.desktop"
-	      "obsidian.desktop"
+        "mumble.desktop"
+        "obsidian.desktop"
       ];
     };
 
@@ -211,8 +208,6 @@
     #   primary-color = "#241f31";
     # };
 
-    "org/gnome/mutter" = {
-      edge-tiling = true;
-    };
+    "org/gnome/mutter" = { edge-tiling = true; };
   };
 }
