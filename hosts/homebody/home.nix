@@ -55,14 +55,18 @@
     rustc
     gcc
     vscode-fhs
+    awscli2
 
     # I D WHEE
     zellij
-    ranger
+    joshuto
+    alacritty
+    chatgpt-cli
 
     # # utilities
     unzip
     jq
+    groff
 
     # # gnome extensions
     gnomeExtensions.caffeine
@@ -74,7 +78,7 @@
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -82,8 +86,23 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-  ];
 
+    (pkgs.writeShellScriptBin "home-edit" ''
+      $EDITOR /home/carsoncall/nixos/hosts/homebody/home.nix;
+    '')
+
+    (pkgs.writeShellScriptBin "conf-edit" ''
+      $EDITOR /home/carsoncall/nixos/hosts/homebody/configuration.nix
+    '')
+
+    (pkgs.writeShellScriptBin "update" ''
+      sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody
+    '')
+
+    (pkgs.writeShellScriptBin "clean" ''
+      sudo nix-collect-garbage --delete-older-than 7d
+    '')
+  ];
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -91,6 +110,54 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
+    ".config/alacritty/alacritty.toml".text = ''
+      [shell] 
+      program = "/etc/profiles/per-user/carsoncall/bin/fish"
+      args =  ["--command=zellij"]
+
+      [font.normal]
+      family = "JetBrainsMono Nerd Font"
+      style = "Medium"
+
+      [font.bold]
+      family = "JetBrainsMono Nerd Font"
+      style = "Heavy"
+
+      [font.italic]
+      family = "JetBrainsMono Nerd Font"
+      style = "Medium Italic"
+
+      # Colors (Everforest Dark) https://github.com/alacritty/alacritty-theme/blob/master/themes/everforest_dark.toml
+
+      # Default colors
+      [colors.primary]
+      background = '#2d353b'
+      foreground = '#d3c6aa'
+
+      # Normal colors
+      [colors.normal]
+      black   = '#475258'
+      red     = '#e67e80'
+      green   = '#a7c080'
+      yellow  = '#dbbc7f'
+      blue    = '#7fbbb3'
+      magenta = '#d699b6'
+      cyan    = '#83c092'
+      white   = '#d3c6aa'
+
+      # Bright colors
+      [colors.bright]
+      black   = '#475258'
+      red     = '#e67e80'
+      green   = '#a7c080'
+      yellow  = '#dbbc7f'
+      blue    = '#7fbbb3'
+      magenta = '#d699b6'
+      cyan    = '#83c092'
+      white   = '#d3c6aa'
+    '';
+
+    ".config/zellij/config.kdl".source = ./../../modules/config.kdl;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -115,7 +182,7 @@
   #  /etc/profiles/per-user/carsoncall/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "hx";
     SHELL = "${pkgs.zsh}/bin/zsh";
     # NIXOS_OZONE_WL = "1";
   };
@@ -125,17 +192,6 @@
     zsh = {
       enable = true;
       enableCompletion = false;
-      shellAliases = {
-        home-edit = "nano /home/carsoncall/nixos/hosts/homebody/home.nix";
-        conf-edit =
-          "nano /home/carsoncall/nixos/hosts/homebody/configuration.nix";
-        update =
-          "sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody";
-        clean = "sudo nix-collect-garbage --delete-older-than 7d";
-        update-extensions = ''
-          sh /home/carsoncall/code/nixpkgs/pkgs/applications/editors/vscode/extensions/update_installed_exts.sh
-                                       >> ~/nixos/hosts/homebody/extensions.json'';
-      };
       oh-my-zsh = {
         enable = true;
         plugins = [ "git" "systemd" ];
@@ -146,7 +202,7 @@
     helix = {
       enable = true;
       settings = {
-        theme = "autumn_night_transparent";
+        theme = "everforest_dark_transparent";
         editor.cursor-shape = {
           normal = "block";
           insert = "bar";
@@ -163,10 +219,12 @@
           "inherits" = "autumn_night";
           "ui.background" = { };
         };
+        everforest_dark_transparent = {
+          "inherits" = "everforest_dark";
+          "ui.background" = { };
+        };
       };
     };
-
-    alacritty = { enable = true; };
 
     firefox = { enable = true; };
 

@@ -11,22 +11,22 @@
 # in
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # ../../modules/gnome.nix
-      inputs.home-manager.nixosModules.default
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # ../../modules/gnome.nix
+    inputs.home-manager.nixosModules.default
+  ];
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   # Enable unfree software
   nixpkgs.config.allowUnfree = true;
+  # Enable dynamically linked executables
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   #boot.kernelParams = [
-   # clearcpuid=304
+  # clearcpuid=304
   #]
 
   networking.hostName = "homebody"; # Define your hostname.
@@ -60,7 +60,6 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  
   # Enable GDM to use monitor configuration
   # systemd.tmpfiles.rules = [
   #   "L+ /run/gdm/.config/monitors.xml - - - - ${monitorsConfig}"
@@ -98,12 +97,11 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.carsoncall = {
     isNormalUser = true;
     description = "Carson Call";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
   };
 
@@ -111,18 +109,17 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs; };
-    users = {
-      carsoncall = import ./home.nix;
-    };
+    users = { carsoncall = import ./home.nix; };
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+  environment.systemPackages = with pkgs;
+    [
+      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      #  wget
 
-  ];
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -141,16 +138,13 @@
 
   # Enable the Steam stuff 
   programs.steam.enable = true;
-  hardware.opengl = { 
+  hardware.opengl = {
     # Mesa 
-    enable = true; 
+    enable = true;
     # Vulkan 
-    driSupport = true; 
+    driSupport = true;
     # Rocm support and vulkan drivers 
-    extraPackages = with pkgs; [ 
-      rocmPackages.clr.icd 
-      amdvlk 
-    ]; 
+    extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
   };
   programs.zsh.enable = true;
 
