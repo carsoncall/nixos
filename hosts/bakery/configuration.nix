@@ -29,7 +29,7 @@
   # clearcpuid=304
   #]
 
-  networking.hostName = "homebody"; # Define your hostname.
+  networking.hostName = "bakery"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
