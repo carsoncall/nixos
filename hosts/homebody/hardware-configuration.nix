@@ -4,33 +4,30 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/91f74d0e-8c2d-4184-ac25-2f3b43d1dcb5";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/91f74d0e-8c2d-4184-ac25-2f3b43d1dcb5";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/49FD-2DF0";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/49FD-2DF0";
+    fsType = "vfat";
+  };
 
-  fileSystems."/home/carsoncall/.steam/mount" =
-    { device = "/dev/disk/by-uuid/e6917512-bdd5-4e45-a040-d02272c0ed47";
-      fsType = "ext4";
-    };
+  fileSystems."/home/carsoncall/.steam/mount" = {
+    device = "/dev/disk/by-uuid/e6917512-bdd5-4e45-a040-d02272c0ed47";
+    fsType = "ext4";
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/b4fd4277-c11a-46ab-b38f-eb69c606a02c"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/b4fd4277-c11a-46ab-b38f-eb69c606a02c"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -44,5 +41,15 @@
   # networking.interfaces.wlp7s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  hardware.opengl = {
+    # Mesa 
+    enable = true;
+    # Vulkan 
+    driSupport = true;
+    # Rocm support and vulkan drivers 
+    extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
+  };
 }
