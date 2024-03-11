@@ -67,8 +67,8 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Enable CUPS to print documents.
@@ -118,7 +118,7 @@
     [
       #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       #  wget
-
+      lshw
     ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -137,21 +137,36 @@
   virtualisation.docker.enable = true;
 
   # Enable the Steam stuff 
-  programs.steam.enable = true;
-  hardware.opengl = {
-    # Mesa 
-    enable = true;
-    # Vulkan 
-    driSupport = true;
-    # Rocm support and vulkan drivers 
-    extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
-  };
+  #powerManagement.steam.enable = true;
+  #hardware.opengl = {
+  # Mesa 
+  #enable = true;
+  # Vulkan 
+  #driSupport = true;
+  # Rocm support and vulkan drivers 
+  #extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
+  #};
+  # Enable OpenGL
   programs.zsh.enable = true;
+  boot.extraModprobeConfig = ''
+    blacklist nouveau
+    options nouveau modeset=0
+  '';
 
-  # This is to enable Vial to communicate with USB keyboards
   services.udev.extraRules = ''
+    # Remove NVIDIA USB xHCI Host Controller devices, if present
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c0330", ATTR{power/control}="auto", ATTR{remove}="1"
+    # Remove NVIDIA USB Type-C UCSI devices, if present
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c8000", ATTR{power/control}="auto", ATTR{remove}="1"
+    # Remove NVIDIA Audio devices, if present
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{power/control}="auto", ATTR{remove}="1"
+    # Remove NVIDIA VGA/3D controller devices
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
+    # allow vial to communicate with keyboards
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
   '';
+  boot.blacklistedKernelModules =
+    [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
