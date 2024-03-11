@@ -28,13 +28,14 @@
     signal-desktop
     slack
     protonvpn-gui
+    protonmail-bridge
     cider
     mumble
     pavucontrol
     obsidian
     firefox
     discord
-    zoom
+    zoom-us
     home-manager
     teams-for-linux
     gh
@@ -42,6 +43,7 @@
     gimp
     vial
     libreoffice
+    thunderbird
 
     # # Programming
     nil
@@ -49,7 +51,7 @@
     maven
     jdk17
     jetbrains.idea-community
-    nodejs_21
+    nodejs
     python3
     cargo
     rustc
@@ -63,10 +65,16 @@
     alacritty
     chatgpt-cli
 
+    # language servers
+    jdt-language-server
+    nodePackages.typescript-language-server
+    rust-analyzer
+
     # # utilities
     unzip
     jq
     groff
+    qt6.full
 
     # # gnome extensions
     gnomeExtensions.caffeine
@@ -192,6 +200,10 @@
     zsh = {
       enable = true;
       enableCompletion = false;
+      shellAliases = {
+        js =
+          "joshuto --output-file /tmp/joshutodir; LASTDIR=`cat /tmp/joshutodir`; cd $LASTDIR";
+      };
       oh-my-zsh = {
         enable = true;
         plugins = [ "git" "systemd" ];
@@ -203,10 +215,13 @@
       enable = true;
       settings = {
         theme = "everforest_dark_transparent";
-        editor.cursor-shape = {
-          normal = "block";
-          insert = "bar";
-          select = "underline";
+        editor = {
+          auto-save = true;
+          cursor-shape = {
+            normal = "block";
+            insert = "bar";
+            select = "underline";
+          };
         };
       };
       languages.language = [{

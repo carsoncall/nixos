@@ -21,7 +21,11 @@
   # Enable unfree software
   nixpkgs.config.allowUnfree = true;
   # Enable dynamically linked executables
-
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs;
+    [
+      #add any missing dynmaic libraries here, not in environment.systemPackages.
+    ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -67,8 +71,8 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Enable CUPS to print documents.
