@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
-
+let hostname = "bakery";
+in 
 {
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -88,15 +89,15 @@
     # '')
 
     (pkgs.writeShellScriptBin "home-edit" ''
-      $EDITOR /home/carsoncall/nixos/hosts/homebody/home.nix;
+      $EDITOR /home/carsoncall/nixos/hosts/${hostname}/home.nix;
     '')
 
     (pkgs.writeShellScriptBin "conf-edit" ''
-      $EDITOR /home/carsoncall/nixos/hosts/homebody/configuration.nix
+      $EDITOR /home/carsoncall/nixos/hosts/${hostname}/configuration.nix
     '')
 
     (pkgs.writeShellScriptBin "update" ''
-      sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody
+      sudo nixos-rebuild switch --flake /home/carsoncall/nixos#${hostname}
     '')
 
     (pkgs.writeShellScriptBin "clean" ''
@@ -110,52 +111,7 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
-    ".config/alacritty/alacritty.toml".text = ''
-      [shell] 
-      program = "/etc/profiles/per-user/carsoncall/bin/fish"
-      args =  ["--command=zellij"]
-
-      [font.normal]
-      family = "JetBrainsMono Nerd Font"
-      style = "Medium"
-
-      [font.bold]
-      family = "JetBrainsMono Nerd Font"
-      style = "Heavy"
-
-      [font.italic]
-      family = "JetBrainsMono Nerd Font"
-      style = "Medium Italic"
-
-      # Colors (Everforest Dark) https://github.com/alacritty/alacritty-theme/blob/master/themes/everforest_dark.toml
-
-      # Default colors
-      [colors.primary]
-      background = '#2d353b'
-      foreground = '#d3c6aa'
-
-      # Normal colors
-      [colors.normal]
-      black   = '#475258'
-      red     = '#e67e80'
-      green   = '#a7c080'
-      yellow  = '#dbbc7f'
-      blue    = '#7fbbb3'
-      magenta = '#d699b6'
-      cyan    = '#83c092'
-      white   = '#d3c6aa'
-
-      # Bright colors
-      [colors.bright]
-      black   = '#475258'
-      red     = '#e67e80'
-      green   = '#a7c080'
-      yellow  = '#dbbc7f'
-      blue    = '#7fbbb3'
-      magenta = '#d699b6'
-      cyan    = '#83c092'
-      white   = '#d3c6aa'
-    '';
+    ".config/alacritty/alacritty.toml".source = ./../../modules/alacritty.toml;
 
     ".config/zellij/config.kdl".source = ./../../modules/config.kdl;
 
