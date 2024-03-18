@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 let hostname = "bakery";
-in 
-{
+in {
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -43,6 +42,7 @@ in
     gimp
     vial
     libreoffice
+    google-chrome
 
     # # Programming
     nil
@@ -57,6 +57,7 @@ in
     gcc
     vscode-fhs
     awscli2
+    warp-terminal
 
     # I D WHEE
     zellij
