@@ -44,6 +44,7 @@
     vial
     libreoffice
     thunderbird
+    google-chrome
 
     # # Programming
     nil
