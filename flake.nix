@@ -44,11 +44,11 @@
             inputs.home-manager.nixosModules.default
           ];
         };
-        plug = nixpkgs.lib.nixosSystem {
+        theplug = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs pkgs; };
           modules = [
-            ./hosts/plug/configuration.nix
-            inputs.home-manager.nixosModules.default
+            ./hosts/theplug/configuration.nix
+            ./hosts/theplug/hardware-configuration.nix
           ];
         };
       };
@@ -61,10 +61,10 @@
           specialArgs = { inherit inputs pkgs; };
           modules = [ ./hosts/bakery/home.nix ];
         };
-        plug = inputs.home-manager.lib.homeManagerConfiguration {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [ ./hosts/plug/home.nix ];
-        };
+        # plug = inputs.home-manager.lib.homeManagerConfiguration {
+        #   specialArgs = { inherit inputs pkgs; };
+        #   modules = [ ./hosts/plug/home.nix ];
+        # };
       };
     };
 }
