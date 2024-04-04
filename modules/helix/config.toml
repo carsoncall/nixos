@@ -7,9 +7,12 @@ select = "underline"
 [editor]
 line-number = "relative"
 
-[editor.whitespace]
-render = "all"
-# or control each character
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
 
 [editor.whitespace.characters]
 space = "·"
