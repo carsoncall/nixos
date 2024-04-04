@@ -59,12 +59,14 @@
     gcc
     vscode-fhs
     awscli2
+    python311Packages.pip
 
     # I D WHEE
     zellij
     joshuto
     alacritty
     chatgpt-cli
+    fzf
 
     # language servers
     jdt-language-server
@@ -75,7 +77,9 @@
     unzip
     jq
     groff
+    lsd
     qt6.full
+    zip
 
     # # gnome extensions
     gnomeExtensions.caffeine
@@ -167,7 +171,8 @@
     '';
 
     ".config/zellij/config.kdl".source = ./../../modules/config.kdl;
-
+    ".config/helix/configuration.toml".source = ./../../modules/helix/configuration.toml;
+    ".config/helix/languages.toml".source = ./../../modules/helix/languages.toml;
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
     #   org.gradle.console=verbose
@@ -209,36 +214,6 @@
         enable = true;
         plugins = [ "git" "systemd" ];
         theme = "terminalparty";
-      };
-    };
-
-    helix = {
-      enable = true;
-      settings = {
-        theme = "everforest_dark_transparent";
-        editor = {
-          auto-save = true;
-          cursor-shape = {
-            normal = "block";
-            insert = "bar";
-            select = "underline";
-          };
-        };
-      };
-      languages.language = [{
-        name = "nix";
-        auto-format = true;
-        formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-      }];
-      themes = {
-        autumn_night_transparent = {
-          "inherits" = "autumn_night";
-          "ui.background" = { };
-        };
-        everforest_dark_transparent = {
-          "inherits" = "everforest_dark";
-          "ui.background" = { };
-        };
       };
     };
 

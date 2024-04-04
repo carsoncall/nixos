@@ -25,6 +25,8 @@
   programs.nix-ld.libraries = with pkgs;
     [
       #add any missing dynmaic libraries here, not in environment.systemPackages.
+      libstdcxx5
+
     ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
