@@ -45,6 +45,9 @@ in {
     google-chrome
 
     # # Programming
+    go
+    gopls
+    delve
     nil
     git
     maven
@@ -58,6 +61,7 @@ in {
     vscode-fhs
     awscli2
     warp-terminal
+    jdt-language-server
 
     # I D WHEE
     zellij
