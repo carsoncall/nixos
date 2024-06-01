@@ -26,8 +26,7 @@
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/b4fd4277-c11a-46ab-b38f-eb69c606a02c"; }];
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -43,13 +42,4 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  hardware.opengl = {
-    # Mesa 
-    enable = true;
-    # Vulkan 
-    driSupport = true;
-    # Rocm support and vulkan drivers 
-    extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
-  };
 }

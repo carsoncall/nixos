@@ -154,6 +154,13 @@
   };
   programs.zsh.enable = true;
 
+  services.syncthing = {
+    enable = true;
+    user = "carsoncall";
+    dataDir = "/home/carsoncall/syncthing";
+    configDir = "/home/carsoncall/syncthing/.config/";
+  };
+
   # This is to enable Vial to communicate with USB keyboards
   services.udev.extraRules = ''
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"

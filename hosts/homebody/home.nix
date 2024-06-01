@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
-
-{
+let hostname = "homebody";
+in {
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -45,6 +45,8 @@
     libreoffice
     thunderbird
     google-chrome
+    chromium
+    mediawriter
 
     # # Programming
     nil
@@ -57,9 +59,14 @@
     cargo
     rustc
     gcc
+    go
+    gopls
     vscode-fhs
     awscli2
     python311Packages.pip
+    python311Packages.python-lsp-server
+    direnv
+    dotnet-sdk
 
     # I D WHEE
     zellij
@@ -67,11 +74,16 @@
     alacritty
     chatgpt-cli
     fzf
+    helix
+    neo4j
+    neo4j-desktop
 
     # language servers
     jdt-language-server
     nodePackages.typescript-language-server
     rust-analyzer
+    delve
+    golangci-lint-langserver
 
     # # utilities
     unzip
@@ -123,6 +135,9 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
+    ".config/nixpkgs/config.nix".text = ''
+      { allowUnfree = true; }
+    '';
     ".config/alacritty/alacritty.toml".text = ''
       [shell] 
       program = "/etc/profiles/per-user/carsoncall/bin/fish"
@@ -171,8 +186,9 @@
     '';
 
     ".config/zellij/config.kdl".source = ./../../modules/config.kdl;
-    ".config/helix/configuration.toml".source = ./../../modules/helix/configuration.toml;
-    ".config/helix/languages.toml".source = ./../../modules/helix/languages.toml;
+    ".config/helix/config.toml".source = ./../../modules/helix/config.toml;
+    ".config/helix/languages.toml".source =
+      ./../../modules/helix/languages.toml;
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
     #   org.gradle.console=verbose
@@ -220,6 +236,12 @@
     firefox = { enable = true; };
 
     fish = { enable = true; };
+
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
 
   };
 

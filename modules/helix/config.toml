@@ -6,6 +6,11 @@ select = "underline"
 
 [editor]
 line-number = "relative"
+auto-save = true
+color-modes = true
+completion-timeout = 5
+preview-completion-insert = false
+completion-replace = true
 
 [editor.whitespace.render]
 space = "all"
@@ -13,6 +18,9 @@ tab = "all"
 nbsp = "none"
 nnbsp = "none"
 newline = "none"
+
+[editor.soft-wrap]
+enable = true
 
 [editor.whitespace.characters]
 space = "·"
