@@ -5,9 +5,13 @@
 
     nixpkgs-unstable = { url = "github:nixos/nixpkgs/nixos-unstable"; };
     nixpkgs = { url = "github:nixos/nixpkgs/nixos-24.05"; };
+    nixos-cosmic = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixos-cosmic, ... }@inputs:
     let
       common-modules = name: [
         {
@@ -15,6 +19,8 @@
             settings = {
               experimental-features = [ "nix-command" "flakes"];
               auto-optimise-store = true;
+              substituters = [ "https://cosmic.cachix.org/" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
             };
             gc = {
               automatic = true;
@@ -39,6 +45,7 @@
           modules = [
             ./modules/desktop.nix
             ./modules/gnome.nix
+            nixos-cosmic.nixosModules.default
           ];
         };
         bakery = {
