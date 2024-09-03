@@ -3,68 +3,53 @@
 
   inputs = {
 
-    nixpkgs = { url = "github:nixos/nixpkgs/nixos-unstable"; };
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs-unstable = { url = "github:nixos/nixpkgs/nixos-unstable"; };
+    nixpkgs = { url = "github:nixos/nixpkgs/nixos-24.05"; };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
     let
-      system = "x86_64-linux";
       pkgs = import nixpkgs {
-        inherit system;
         config = {
           allowUnfree = true;
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
       };
+      pkgs-unstable = import nixpkgs {
+        config = {
+          allowUnfree = true;
+        };
+      };
+      common-modules = name: [
+        {
+          nix.settings.experimental-features = [ "nix-command" "flakes"];
+          networking.hostName = name;
+        }
+        ./modules/env.nix
+        ./modules/common-pkgs.nix
+        ./hosts/${name}/configuration.nix
+        ./hosts/${name}/hardware-configuration.nix
+      ];
+      mkSystem = name: cfg: nixpkgs.lib.nixosSystem {
+        system = cfg.system or "x86_64-linux";
+        modules = (common-modules name) ++ (cfg.modules or []);
+        specialArgs = inputs // { inherit name; };
+      };
+      systems = {
+        homebody = {
+          modules = [
+            ./modules/desktop.nix
+          ];
+        };
+        bakery = {
+          modules = [
+            ./modules/desktop.nix
+          ];
+        };
+        theplug = {};
+        plantation = {};
+      };
     in {
-      nixosConfigurations = {
-        homebody = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [
-            ./hosts/homebody/configuration.nix
-            ./hosts/homebody/hardware-configuration.nix
-            inputs.home-manager.nixosModules.default
-          ];
-        };
-        bakery = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [
-            ./hosts/bakery/configuration.nix
-            ./hosts/bakery/hardware-configuration.nix
-            inputs.home-manager.nixosModules.default
-          ];
-        };
-        theplug = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [
-            ./hosts/theplug/configuration.nix
-            ./hosts/theplug/hardware-configuration.nix
-          ];
-        };
-      };
-      homeConfigurations = {
-        homebody = inputs.home-manager.lib.homeManagerConfiguration {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [ ./hosts/homebody/home.nix ];
-        };
-        bakery = inputs.home-manager.lib.homeManagerConfiguration {
-          specialArgs = { inherit inputs pkgs; };
-          modules = [ ./hosts/bakery/home.nix ];
-        };
-        # plug = inputs.home-manager.lib.homeManagerConfiguration {
-        #   specialArgs = { inherit inputs pkgs; };
-        #   modules = [ ./hosts/plug/home.nix ];
-        # };
-      };
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
     };
 }

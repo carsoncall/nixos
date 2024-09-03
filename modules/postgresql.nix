@@ -16,21 +16,15 @@
     ensureUsers = [
       {
         name = "gitea";
-        ensurePermissions = {
-          "DATABASE gitea" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
       {
         name = "nextcloud";
-        ensurePermissions = {
-          "DATABASE nextcloud" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
       {
         name = "immich";
-        ensurePermissions = {
-          "DATABASE immich" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
     ];
 

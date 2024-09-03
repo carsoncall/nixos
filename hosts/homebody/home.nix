@@ -1,5 +1,4 @@
 { config, pkgs, ... }:
-let hostname = "homebody";
 in {
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -25,48 +24,6 @@ in {
   #     pkg-config
   #   ]);
   home.packages = with pkgs; [
-    signal-desktop
-    slack
-    protonvpn-gui
-    protonmail-bridge
-    cider
-    mumble
-    pavucontrol
-    obsidian
-    firefox
-    discord
-    zoom-us
-    home-manager
-    teams-for-linux
-    gh
-    gnome-photos
-    gimp
-    vial
-    libreoffice
-    thunderbird
-    google-chrome
-    chromium
-    mediawriter
-
-    # # Programming
-    nil
-    git
-    maven
-    jdk17
-    jetbrains.idea-community
-    nodejs
-    python3
-    cargo
-    rustc
-    gcc
-    go
-    gopls
-    vscode-fhs
-    awscli2
-    python311Packages.pip
-    python311Packages.python-lsp-server
-    direnv
-    dotnet-sdk
 
     # I D WHEE
     zellij
@@ -112,21 +69,6 @@ in {
     #   echo "Hello, ${config.home.username}!"
     # '')
 
-    (pkgs.writeShellScriptBin "home-edit" ''
-      $EDITOR /home/carsoncall/nixos/hosts/homebody/home.nix;
-    '')
-
-    (pkgs.writeShellScriptBin "conf-edit" ''
-      $EDITOR /home/carsoncall/nixos/hosts/homebody/configuration.nix
-    '')
-
-    (pkgs.writeShellScriptBin "update" ''
-      sudo nixos-rebuild switch --flake /home/carsoncall/nixos#homebody
-    '')
-
-    (pkgs.writeShellScriptBin "clean" ''
-      sudo nix-collect-garbage --delete-older-than 7d
-    '')
   ];
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -245,29 +187,6 @@ in {
 
   };
 
-  dconf.settings = {
-    "org/gnome/shell" = {
-      favorite-apps = [
-        "org.gnome.Settings.desktop"
-        "org.gnome.Nautilus.desktop"
-        "org.gnome.Console.desktop"
-        "firefox.desktop"
-        "code.desktop"
-        "steam.desktop"
-        "signal-desktop.desktop"
-        "protonvpn-app.desktop"
-        "mumble.desktop"
-        "obsidian.desktop"
-      ];
-    };
-
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-      clock-show-date = true;
-      clock-show-weekday = true;
-      clock-format = "24h";
-      enable-hot-corners = false;
-    };
 
     # "/org/gnome/desktop/screensaver" = {
     #   picture-uri = "/run/current-system/sw/share/backgrounds/gnome/blobs-l.svg";
@@ -279,6 +198,5 @@ in {
     #   primary-color = "#241f31";
     # };
 
-    "org/gnome/mutter" = { edge-tiling = true; };
   };
 }

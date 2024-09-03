@@ -9,15 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       #see below for more details on this
-
-      #separate configuration for Nextcloud
-      #./nginx.nix
       ../../modules/postgresql.nix
       ../../modules/gitea.nix
       ../../modules/jellyfin.nix
-      #./nextcloud.nix
-      #./immich.nix
-      
     ];
       
   # Bootloader.
