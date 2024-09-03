@@ -32,9 +32,13 @@
       (pkgs.writeShellScriptBin "update" ''
         sudo nixos-rebuild switch --flake /home/carsoncall/nixos#${name}
       '')
+
+      (pkgs.writeShellScriptBin "config" ''
+        git --git-dir=$HOME/.dotfiles --work-tree=$HOME
+      '')
     ];
   };
-  systemd.user.services.sync-dotfiles = {
+  systemd.user.services.dotfiles = {
     description = "Sync Dotfiles from GitHub";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
