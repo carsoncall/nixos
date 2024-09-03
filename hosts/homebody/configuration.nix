@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 # Make user monitor configuration available 
 # let
@@ -17,9 +17,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/Denver";
 
   # Enable GDM to use monitor configuration
   # systemd.tmpfiles.rules = [
@@ -36,21 +33,12 @@
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
-
+  };
+  services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.carsoncall = {
-    isNormalUser = true;
-    description = "Carson Call";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-    shell = pkgs.zsh;
-  };
-
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tailscale.enable = true;
   virtualisation.docker.enable = true;
@@ -61,7 +49,6 @@
     # Mesa 
     enable = true;
     # Vulkan 
-    driSupport = true;
     # Rocm support and vulkan drivers 
     extraPackages = with pkgs; [ rocmPackages.clr.icd amdvlk ];
   };
@@ -79,5 +66,4 @@
   '';
 
   system.stateVersion = "23.11";
-
 }

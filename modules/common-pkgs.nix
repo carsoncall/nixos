@@ -1,4 +1,4 @@
-{ pkgs, name, ... }:
+{ pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     # network

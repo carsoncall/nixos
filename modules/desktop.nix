@@ -1,85 +1,88 @@
 { pkgs, ... }:
-with pkgs; [
-  # social media
-  signal-desktop
-  slack
-  mumble
-  discord
-  zoom-us
-  teams-for-linux
+{
+  users.users.carsoncall.packages = with pkgs; [
+    # social media
+    signal-desktop
+    slack
+    mumble
+    discord
+    zoom-us
+    teams-for-linux
 
-  # system tools
-  protonvpn-gui
-  pavucontrol
-  home-manager
-  zip
-  unzip
-  groff
-  lsd
+    # system tools
+    protonvpn-gui
+    pavucontrol
+    home-manager
+    zip
+    unzip
+    groff
+    lsd
+    wezterm
 
-  # music
-  cider
+    # music
+    cider
 
-  # browsers
-  firefox
-  google-chrome
+    # browsers
+    firefox
+    google-chrome
 
-  # productivity
-  libreoffice
-  obsidian
-  gnome-photos
-  gimp
+    # productivity
+    libreoffice
+    obsidian
+    gnome-photos
+    gimp
 
-  # hobby
-  vial
+    # hobby
+    vial
 
-  # gnome extensions
-  gnomeExtensions.caffeine
-  gnomeExtensions.quick-settings-audio-panel
-  gnomeExtensions.system-monitor-next
-  gnomeExtensions.gtile
+    # gnome extensions
+    gnomeExtensions.caffeine
+    gnomeExtensions.quick-settings-audio-panel
+    gnomeExtensions.system-monitor-next
+    gnomeExtensions.gtile
 
-  # general programming
-  git
-  gh
-  zellij
-  joshuto
-  alacritty
-  chatgpt-cli
-  fzf
-  helix
-  vscode-fhs
+    # general programming
+    git
+    gh
+    zellij
+    joshuto
+    alacritty
+    chatgpt-cli
+    fzf
+    helix
+    vscode-fhs
 
-  # c/c++
-  gcc
+    # c/c++
+    gcc
 
-  # go 
-  go
-  gopls
-  delve
+    # go 
+    go
+    gopls
+    delve
 
-  # java
-  jdt-language-server
-  maven
-  jdk17
-  jetbrains.idea-community
+    # java
+    jdt-language-server
+    maven
+    jdk17
+    jetbrains.idea-community
 
-  # javascript
-  nodejs
-  nodePackages.typescript-language-server
+    # javascript
+    nodejs
+    nodePackages.typescript-language-server
 
-  # nix
-  nil
+    # nix
+    nil
 
-  # python
-  python3
-  python311Packages.python-lsp-server
+    # python
+    python3
+    python311Packages.python-lsp-server
 
-  # rust
-  rustc
-  rust-analyzer
-  cargo
+    # rust
+    rustc
+    rust-analyzer
+    cargo
 
-  # proprietary garbage
-  awscli2
-]
+    # proprietary garbage
+    awscli2
+  ];
+}

@@ -23,7 +23,7 @@
     isNormalUser = true;
     description = "Carson Call";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [
+    packages = [
       # shell scripts
       (pkgs.writeShellScriptBin "conf-edit" ''
         $EDITOR /home/carsoncall/nixos/hosts/${name}/configuration.nix
